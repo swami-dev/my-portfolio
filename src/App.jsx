@@ -1,740 +1,6 @@
-// import React, { useState, useEffect, useRef } from "react";
-// import { motion } from "framer-motion";
-// import profileImg from "./assets/profile.jpeg";
-// import {
-//   Github,
-//   Linkedin,
-//   Mail,
-//   Download,
-//   Sun,
-//   Moon,
-// } from "lucide-react";
-
-// export default function FullstackProfileHome({
-//   data = {
-//     name: "Swami Antaryami Das",
-//     title: "Full-Stack Developer",
-//     location: "Bengaluru, India",
-//     about:
-//       "I craft high-performance web applications with elegant, scalable code and stunning UI. Specializing in React, Node.js, and cloud-native systems.",
-//     avatar: profileImg,
-//     resumeUrl: "#",
-//     socials: {
-//       github: "https://github.com/swami-dev",
-//       linkedin: "https://linkedin.com/in/swami-antaryami-das-a341aa1b4",
-//       mail: "mailto:blockswitching@gmail.com",
-//     },
-//     stats: [
-//       { label: "Years Experience", value: "5+" },
-//       { label: "Projects", value: "8" },
-//       { label: "Open Source", value: "5" },
-//     ],
-//     skills: [
-//       "Python",
-//       "Django",
-//       "React",
-//       "TypeScript",
-//       "Node.js",
-//       "Postgres",
-//       "Docker",
-//       "AWS",
-//     ],
-//     projects: [
-//       {
-//         id: 1,
-//         title: "Realtime Analytics Dashboard",
-//         description:
-//           "React + WebSocket + Node. Handles millions of events/day with seamless UX.",
-//         preview:
-//           "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=60",
-//         url: "#",
-//       },
-//       {
-//         id: 2,
-//         title: "E-commerce Platform",
-//         description: "Resilient microservices architecture with secure payments.",
-//         preview:
-//           "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60",
-//         url: "#",
-//       },
-//       {
-//         id: 3,
-//         title: "Open Source Component Library",
-//         description: "Themeable, accessible UI components for rapid prototyping.",
-//         preview:
-//           "https://images.unsplash.com/photo-1520975916931-2a0f4b4a7c2b?auto=format&fit=crop&w=800&q=60",
-//         url: "#",
-//       },
-//     ],
-//   },
-// }) {
-//   const [dark, setDark] = useState(false);
-//   const [planets, setPlanets] = useState([]);
-//   const [shootingStars, setShootingStars] = useState([]);
-//   const containerRef = useRef(null);
-
-//   const colors = [
-//     "#ff4b1f", "#ff9068", "#1fddff", "#2af598",
-//     "#ff512f", "#dd2476", "#24c6dc", "#514a9d",
-//     "#f12711", "#f5af19"
-//   ];
-
-//   // Create planets with moons
-//   useEffect(() => {
-//     const newPlanets = Array.from({ length: 7 }).map(() => ({
-//       size: Math.random() * 50 + 30,
-//       color: colors[Math.floor(Math.random() * colors.length)],
-//       x: Math.random() * window.innerWidth,
-//       y: Math.random() * window.innerHeight,
-//       speed: Math.random() * 0.5 + 0.2,
-//       moon: {
-//         size: Math.random() * 12 + 6,
-//         color: "#fff",
-//         orbitRadius: Math.random() * 30 + 20,
-//         orbitSpeed: Math.random() * 0.02 + 0.005,
-//         angle: Math.random() * Math.PI * 2,
-//       },
-//     }));
-//     setPlanets(newPlanets);
-//   }, []);
-
-//   // Animate moons
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setPlanets((prev) =>
-//         prev.map((p) => ({
-//           ...p,
-//           moon: {
-//             ...p.moon,
-//             angle: p.moon.angle + p.moon.orbitSpeed,
-//           },
-//         }))
-//       );
-//     }, 16); // ~60fps
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   // Mouse parallax
-//   const handleMouseMove = (e) => {
-//     const { clientX, clientY } = e;
-//     const centerX = window.innerWidth / 2;
-//     const centerY = window.innerHeight / 2;
-//     const deltaX = (clientX - centerX) / centerX;
-//     const deltaY = (clientY - centerY) / centerY;
-
-//     setPlanets((prev) =>
-//       prev.map((p) => ({
-//         ...p,
-//         offsetX: deltaX * p.speed * 50,
-//         offsetY: deltaY * p.speed * 50,
-//       }))
-//     );
-//   };
-
-//   // Shooting stars generator
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       const id = Date.now();
-//       const newStar = {
-//         id,
-//         startX: Math.random() * window.innerWidth,
-//         startY: Math.random() * window.innerHeight * 0.5,
-//       };
-//       setShootingStars((prev) => [...prev, newStar]);
-//       setTimeout(() => {
-//         setShootingStars((prev) => prev.filter((s) => s.id !== id));
-//       }, 1500);
-//     }, 2500);
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   const gradientText = {
-//     background: "linear-gradient(90deg, #ff4b1f, #1fddff)",
-//     WebkitBackgroundClip: "text",
-//     WebkitTextFillColor: "transparent",
-//   };
-
-//   return (
-//     <div
-//       ref={containerRef}
-//       onMouseMove={handleMouseMove}
-//       className={dark ? "bg-dark text-light" : "bg-light text-dark"}
-//       style={{ minHeight: "100vh", position: "relative", overflow: "hidden" }}
-//     >
-//       {/* Background Planets & Moons */}
-//       {planets.map((p, idx) => {
-//         const moonX = p.x + (p.moon.orbitRadius * Math.cos(p.moon.angle));
-//         const moonY = p.y + (p.moon.orbitRadius * Math.sin(p.moon.angle));
-//         return (
-//           <React.Fragment key={idx}>
-//             <motion.div
-//               style={{
-//                 position: "absolute",
-//                 width: p.size,
-//                 height: p.size,
-//                 background: p.color,
-//                 borderRadius: "50%",
-//                 top: p.y,
-//                 left: p.x,
-//                 filter: "blur(2px)",
-//                 zIndex: 0,
-//               }}
-//               animate={{
-//                 x: p.offsetX || 0,
-//                 y: p.offsetY || 0,
-//               }}
-//               transition={{ type: "spring", stiffness: 20, damping: 10 }}
-//             />
-//             <motion.div
-//               style={{
-//                 position: "absolute",
-//                 width: p.moon.size,
-//                 height: p.moon.size,
-//                 background: p.moon.color,
-//                 borderRadius: "50%",
-//                 top: moonY,
-//                 left: moonX,
-//                 zIndex: 0,
-//               }}
-//               animate={{
-//                 x: p.offsetX || 0,
-//                 y: p.offsetY || 0,
-//               }}
-//               transition={{ type: "spring", stiffness: 20, damping: 10 }}
-//             />
-//           </React.Fragment>
-//         );
-//       })}
-
-//       {/* Shooting Stars */}
-//       {shootingStars.map((star) => (
-//         <motion.div
-//           key={star.id}
-//           style={{
-//             position: "absolute",
-//             top: star.startY,
-//             left: star.startX,
-//             width: "2px",
-//             height: "80px",
-//             background: "white",
-//             boxShadow: "0 0 8px white",
-//             zIndex: 0,
-//           }}
-//           initial={{ opacity: 1 }}
-//           animate={{ x: 300, y: 300, opacity: 0 }}
-//           transition={{ duration: 1.5, ease: "easeOut" }}
-//         />
-//       ))}
-
-//       {/* Main Content */}
-//       <div className="container py-5" style={{ position: "relative", zIndex: 1 }}>
-//         <header className="d-flex justify-content-between align-items-center mb-5">
-//           <div>
-//             <h2 style={gradientText} className="fw-bold">
-//               {data.name}
-//             </h2>
-//             <small className="text-muted">{data.title}</small>
-//           </div>
-//           <div className="d-flex gap-2">
-//             <button
-//               className="btn btn-outline-secondary rounded-circle"
-//               onClick={() => setDark(!dark)}
-//               title="Toggle theme"
-//             >
-//               {dark ? <Sun size={18} /> : <Moon size={18} />}
-//             </button>
-//             <a href={data.resumeUrl} download className="btn btn-primary">
-//               <Download size={16} className="me-2" />
-//               Resume
-//             </a>
-//           </div>
-//         </header>
-
-//         {/* Hero */}
-//         <motion.section
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.7 }}
-//           className="row align-items-center mb-5"
-//         >
-//           <div className="col-md-4 text-center">
-//             <img
-//               src={data.avatar}
-//               alt="Avatar"
-//               className="rounded-circle shadow-lg border border-4 border-primary"
-//               style={{ width: "180px", height: "180px", objectFit: "cover" }}
-//             />
-//           </div>
-//           <div className="col-md-8">
-//             <h1 className="fw-bold mb-3">
-//               Building{" "}
-//               <span style={gradientText}>exceptional web experiences</span>
-//             </h1>
-//             <p className="lead text-muted">{data.about}</p>
-//             <div className="mt-3 d-flex gap-3">
-//               <a href={data.socials.github} className="text-decoration-none text-reset">
-//                 <Github /> GitHub
-//               </a>
-//               <a href={data.socials.linkedin} className="text-decoration-none text-reset">
-//                 <Linkedin /> LinkedIn
-//               </a>
-//               <a href={data.socials.mail} className="text-decoration-none text-reset">
-//                 <Mail /> Email
-//               </a>
-//             </div>
-//             <div className="mt-4">
-//               {data.skills.map((s) => (
-//                 <span key={s} className="badge bg-primary me-2 mb-2">
-//                   {s}
-//                 </span>
-//               ))}
-//             </div>
-//           </div>
-//         </motion.section>
-
-//         {/* Stats */}
-//         <div className="row text-center mb-5">
-//           {data.stats.map((stat) => (
-//             <div key={stat.label} className="col-md-4">
-//               <motion.div
-//                 whileHover={{ scale: 1.05 }}
-//                 className="p-4 shadow-sm rounded bg-white"
-//               >
-//                 <h3 className="fw-bold">{stat.value}</h3>
-//                 <p className="text-muted mb-0">{stat.label}</p>
-//               </motion.div>
-//             </div>
-//           ))}
-//         </div>
-
-//         {/* Projects */}
-//         <section id="projects" className="mb-5">
-//           <h2 className="fw-bold mb-3" style={gradientText}>
-//             Selected Projects
-//           </h2>
-//           <div className="row g-4">
-//             {data.projects.map((p) => (
-//               <motion.div
-//                 key={p.id}
-//                 whileHover={{ scale: 1.02 }}
-//                 className="col-md-4"
-//               >
-//                 <div className="card shadow-sm border-0 h-100">
-//                   <img
-//                     src={p.preview}
-//                     className="card-img-top"
-//                     alt={p.title}
-//                     style={{ height: "180px", objectFit: "cover" }}
-//                   />
-//                   <div className="card-body">
-//                     <h5 className="fw-bold">{p.title}</h5>
-//                     <p className="text-muted small">{p.description}</p>
-//                   </div>
-//                 </div>
-//               </motion.div>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* Footer */}
-//         <footer className="pt-4 border-top text-muted small">
-//           <div className="d-flex justify-content-between">
-//             <span>
-//               © {new Date().getFullYear()} {data.name} — Built with ❤️
-//             </span>
-//             <div className="d-flex gap-3">
-//               <a href={data.socials.github} className="text-reset">
-//                 <Github size={16} />
-//               </a>
-//               <a href={data.socials.linkedin} className="text-reset">
-//                 <Linkedin size={16} />
-//               </a>
-//               <a href={data.socials.mail} className="text-reset">
-//                 <Mail size={16} />
-//               </a>
-//             </div>
-//           </div>
-//         </footer>
-//       </div>
-//     </div>
-//   );
-// }
-// import React, { useState, useEffect, useRef } from "react";
-// import { motion } from "framer-motion";
-// import profileImg from "./assets/profile.jpeg";
-// import { Github, Linkedin, Mail, Download, Sun, Moon } from "lucide-react";
-
-// export default function FullstackProfileHome({
-//   data = {
-//     name: "Swami Antaryami Das",
-//     title: "Full-Stack Developer",
-//     location: "Bengaluru, India",
-//     about:
-//       "I craft high-performance web applications with elegant, scalable code and stunning UI. Specializing in React, Node.js, and cloud-native systems.",
-//     avatar: profileImg,
-//     resumeUrl: "#",
-//     socials: {
-//       github: "https://github.com/swami-dev",
-//       linkedin: "https://linkedin.com/in/swami-antaryami-das-a341aa1b4",
-//       mail: "mailto:blockswitching@gmail.com",
-//     },
-//     stats: [
-//       { label: "Years Experience", value: "5+" },
-//       { label: "Projects", value: "8" },
-//       { label: "Open Source", value: "5" },
-//     ],
-//     skills: [
-//       "Python",
-//       "Django",
-//       "React",
-//       "TypeScript",
-//       "Node.js",
-//       "Postgres",
-//       "Docker",
-//       "AWS",
-//     ],
-//     projects: [
-//       {
-//         id: 1,
-//         title: "Realtime Analytics Dashboard",
-//         description:
-//           "React + WebSocket + Node. Handles millions of events/day with seamless UX.",
-//         preview:
-//           "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=60",
-//         url: "#",
-//       },
-//       {
-//         id: 2,
-//         title: "E-commerce Platform",
-//         description: "Resilient microservices architecture with secure payments.",
-//         preview:
-//           "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60",
-//         url: "#",
-//       },
-//       {
-//         id: 3,
-//         title: "Open Source Component Library",
-//         description: "Themeable, accessible UI components for rapid prototyping.",
-//         preview:
-//           "https://images.unsplash.com/photo-1520975916931-2a0f4b4a7c2b?auto=format&fit=crop&w=800&q=60",
-//         url: "#",
-//       },
-//     ],
-//   },
-// }) {
-//   const [dark, setDark] = useState(false);
-//   const [planets, setPlanets] = useState([]);
-//   const [shootingStars, setShootingStars] = useState([]);
-//   const containerRef = useRef(null);
-
-//   const colors = [
-//     "#ff4b1f",
-//     "#ff9068",
-//     "#1fddff",
-//     "#2af598",
-//     "#ff512f",
-//     "#dd2476",
-//     "#24c6dc",
-//     "#514a9d",
-//     "#f12711",
-//     "#f5af19",
-//   ];
-
-//   useEffect(() => {
-//     const newPlanets = Array.from({ length: 7 }).map(() => ({
-//       size: Math.random() * 50 + 30,
-//       color: colors[Math.floor(Math.random() * colors.length)],
-//       x: Math.random() * window.innerWidth,
-//       y: Math.random() * window.innerHeight,
-//       speed: Math.random() * 0.5 + 0.2,
-//       moon: {
-//         size: Math.random() * 12 + 6,
-//         color: "#fff",
-//         orbitRadius: Math.random() * 30 + 20,
-//         orbitSpeed: Math.random() * 0.02 + 0.005,
-//         angle: Math.random() * Math.PI * 2,
-//       },
-//     }));
-//     setPlanets(newPlanets);
-//   }, []);
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setPlanets((prev) =>
-//         prev.map((p) => ({
-//           ...p,
-//           moon: {
-//             ...p.moon,
-//             angle: p.moon.angle + p.moon.orbitSpeed,
-//           },
-//         }))
-//       );
-//     }, 16);
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   const handleMouseMove = (e) => {
-//     const { clientX, clientY } = e;
-//     const centerX = window.innerWidth / 2;
-//     const centerY = window.innerHeight / 2;
-//     const deltaX = (clientX - centerX) / centerX;
-//     const deltaY = (clientY - centerY) / centerY;
-
-//     setPlanets((prev) =>
-//       prev.map((p) => ({
-//         ...p,
-//         offsetX: deltaX * p.speed * 50,
-//         offsetY: deltaY * p.speed * 50,
-//       }))
-//     );
-//   };
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       const id = Date.now();
-//       const newStar = {
-//         id,
-//         startX: Math.random() * window.innerWidth,
-//         startY: Math.random() * window.innerHeight * 0.5,
-//       };
-//       setShootingStars((prev) => [...prev, newStar]);
-//       setTimeout(() => {
-//         setShootingStars((prev) => prev.filter((s) => s.id !== id));
-//       }, 1500);
-//     }, 2500);
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   const gradientText = {
-//     background: "linear-gradient(90deg, #ff4b1f, #1fddff)",
-//     WebkitBackgroundClip: "text",
-//     WebkitTextFillColor: "transparent",
-//   };
-
-//   const darkStyles = {
-//     backgroundColor: "#121212",
-//     color: "#f5f5f5",
-//   };
-
-//   const lightStyles = {
-//     backgroundColor: "#f8f9fa",
-//     color: "#212529",
-//   };
-
-//   return (
-//     <div
-//       ref={containerRef}
-//       onMouseMove={handleMouseMove}
-//       style={{
-//         minHeight: "100vh",
-//         position: "relative",
-//         overflow: "hidden",
-//         ...(dark ? darkStyles : lightStyles),
-//       }}
-//     >
-//       {/* Planets */}
-//       {planets.map((p, idx) => {
-//         const moonX = p.x + p.moon.orbitRadius * Math.cos(p.moon.angle);
-//         const moonY = p.y + p.moon.orbitRadius * Math.sin(p.moon.angle);
-//         return (
-//           <React.Fragment key={idx}>
-//             <motion.div
-//               style={{
-//                 position: "absolute",
-//                 width: p.size,
-//                 height: p.size,
-//                 background: p.color,
-//                 borderRadius: "50%",
-//                 top: p.y,
-//                 left: p.x,
-//                 filter: "blur(2px)",
-//                 zIndex: 0,
-//               }}
-//               animate={{
-//                 x: p.offsetX || 0,
-//                 y: p.offsetY || 0,
-//               }}
-//             />
-//             <motion.div
-//               style={{
-//                 position: "absolute",
-//                 width: p.moon.size,
-//                 height: p.moon.size,
-//                 background: p.moon.color,
-//                 borderRadius: "50%",
-//                 top: moonY,
-//                 left: moonX,
-//                 zIndex: 0,
-//               }}
-//               animate={{
-//                 x: p.offsetX || 0,
-//                 y: p.offsetY || 0,
-//               }}
-//             />
-//           </React.Fragment>
-//         );
-//       })}
-
-//       {/* Shooting stars */}
-//       {shootingStars.map((star) => (
-//         <motion.div
-//           key={star.id}
-//           style={{
-//             position: "absolute",
-//             top: star.startY,
-//             left: star.startX,
-//             width: "2px",
-//             height: "80px",
-//             background: "white",
-//             boxShadow: "0 0 8px white",
-//             zIndex: 0,
-//           }}
-//           initial={{ opacity: 1 }}
-//           animate={{ x: 300, y: 300, opacity: 0 }}
-//           transition={{ duration: 1.5, ease: "easeOut" }}
-//         />
-//       ))}
-
-//       {/* Main content */}
-//       <div className="container py-5" style={{ position: "relative", zIndex: 1 }}>
-//         <header className="d-flex justify-content-between align-items-center mb-5">
-//           <div>
-//             <h2 style={gradientText} className="fw-bold">
-//               {data.name}
-//             </h2>
-//             <small className={dark ? "text-light" : "text-muted"}>
-//               {data.title}
-//             </small>
-//           </div>
-//           <div className="d-flex gap-2">
-//             <button
-//               className={`btn btn-outline-${dark ? "light" : "dark"} rounded-circle`}
-//               onClick={() => setDark(!dark)}
-//             >
-//               {dark ? <Sun size={18} /> : <Moon size={18} />}
-//             </button>
-//             <a
-//               href={data.resumeUrl}
-//               download
-//               className={`btn btn-${dark ? "light" : "primary"}`}
-//             >
-//               <Download size={16} className="me-2" /> Resume
-//             </a>
-//           </div>
-//         </header>
-
-//         {/* Hero section */}
-//         <motion.section
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           className="row align-items-center mb-5"
-//         >
-//           <div className="col-md-4 text-center">
-//             <img
-//               src={data.avatar}
-//               alt="Avatar"
-//               className="rounded-circle shadow-lg border border-4 border-primary"
-//               style={{ width: "180px", height: "180px", objectFit: "cover" }}
-//             />
-//           </div>
-//           <div className="col-md-8">
-//             <h1 className="fw-bold mb-3">
-//               Building <span style={gradientText}>exceptional web experiences</span>
-//             </h1>
-//             <p className={dark ? "text-light" : "text-muted"}>{data.about}</p>
-//             <div className="mt-3 d-flex gap-3">
-//               <a href={data.socials.github} className={dark ? "text-light" : "text-reset"}>
-//                 <Github /> GitHub
-//               </a>
-//               <a href={data.socials.linkedin} className={dark ? "text-light" : "text-reset"}>
-//                 <Linkedin /> LinkedIn
-//               </a>
-//               <a href={data.socials.mail} className={dark ? "text-light" : "text-reset"}>
-//                 <Mail /> Email
-//               </a>
-//             </div>
-//             <div className="mt-4">
-//               {data.skills.map((s) => (
-//                 <span
-//                   key={s}
-//                   className={`badge ${dark ? "bg-light text-dark" : "bg-primary"} me-2 mb-2`}
-//                 >
-//                   {s}
-//                 </span>
-//               ))}
-//             </div>
-//           </div>
-//         </motion.section>
-
-//         {/* Stats */}
-//         <div className="row text-center mb-5">
-//           {data.stats.map((stat) => (
-//             <div key={stat.label} className="col-md-4">
-//               <motion.div
-//                 whileHover={{ scale: 1.05 }}
-//                 className={`p-4 shadow-sm rounded ${dark ? "bg-secondary text-light" : "bg-white"}`}
-//               >
-//                 <h3 className="fw-bold">{stat.value}</h3>
-//                 <p className={dark ? "text-light" : "text-muted"}>{stat.label}</p>
-//               </motion.div>
-//             </div>
-//           ))}
-//         </div>
-
-//         {/* Projects */}
-//         <section className="mb-5">
-//           <h2 className="fw-bold mb-3" style={gradientText}>
-//             Selected Projects
-//           </h2>
-//           <div className="row g-4">
-//             {data.projects.map((p) => (
-//               <motion.div key={p.id} whileHover={{ scale: 1.02 }} className="col-md-4">
-//                 <div
-//                   className={`card shadow-sm border-0 h-100 ${dark ? "bg-secondary text-light" : ""}`}
-//                 >
-//                   <img
-//                     src={p.preview}
-//                     className="card-img-top"
-//                     alt={p.title}
-//                     style={{ height: "180px", objectFit: "cover" }}
-//                   />
-//                   <div className="card-body">
-//                     <h5 className="fw-bold">{p.title}</h5>
-//                     <p className="small">{p.description}</p>
-//                   </div>
-//                 </div>
-//               </motion.div>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* Footer */}
-//         <footer className="pt-4 border-top small">
-//           <div className="d-flex justify-content-between">
-//             <span>
-//               © {new Date().getFullYear()} {data.name} — Built with ❤️
-//             </span>
-//             <div className="d-flex gap-3">
-//               <a href={data.socials.github} className={dark ? "text-light" : "text-reset"}>
-//                 <Github size={16} />
-//               </a>
-//               <a href={data.socials.linkedin} className={dark ? "text-light" : "text-reset"}>
-//                 <Linkedin size={16} />
-//               </a>
-//               <a href={data.socials.mail} className={dark ? "text-light" : "text-reset"}>
-//                 <Mail size={16} />
-//               </a>
-//             </div>
-//           </div>
-//         </footer>
-//       </div>
-//     </div>
-//   );
-// }
-// src/FullstackProfileHome.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import profileImg from "./assets/profile.jpeg";
+import profileImg from "./assets/profilenew.png";
 import { Github, Linkedin, Mail, Download, Sun, Moon } from "lucide-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -1102,8 +368,9 @@ export default function FullstackProfileHome({
             <img
               src={data.avatar}
               alt="Avatar"
-              className="rounded-circle shadow-lg border border-4 border-primary"
-              style={{ width: 180, height: 180, objectFit: "cover" }}
+              // className="rounded-circle shadow-lg border border-4 border-primary"
+              className="rounded-3 shadow-lg border border-4 border-primary"
+              style={{ width: 230, height: 250, objectFit: "cover" }}
             />
           </div>
 
@@ -1139,7 +406,7 @@ export default function FullstackProfileHome({
         </motion.section>
 
         {/* Stats */}
-        <div className="row text-center mb-5">
+        {/* <div className="row text-center mb-5">
           {data.stats.map((stat) => (
             <div key={stat.label} className="col-6 col-md-4 mb-3">
               <motion.div
@@ -1151,12 +418,94 @@ export default function FullstackProfileHome({
               </motion.div>
             </div>
           ))}
-        </div>
+        </div> */}
+
+
+
+<div className="row text-center mb-5">
+  {data.stats.map((stat, i) => {
+    const icons = ["💼", "🚀", "🌐"]; // Replace with Lucide icons if needed
+    return (
+      <div key={stat.label} className="col-6 col-md-4 mb-3">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+          className="p-4 rounded shadow-lg position-relative overflow-hidden"
+          style={{
+            background: dark
+              ? "linear-gradient(135deg, rgba(99,102,241,0.9), rgba(168,85,247,0.9))"
+              : "linear-gradient(135deg, rgba(0,124,240,0.9), rgba(0,223,216,0.9))",
+            color: dark ? "#fff" : "#000",
+            border: "1px solid rgba(255,255,255,0.2)",
+          }}
+        >
+          {/* Stripes Overlay */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 10px, transparent 10px, transparent 20px)",
+              animation: "moveStripes 4s linear infinite",
+              zIndex: 0,
+            }}
+          ></div>
+
+          {/* Card Content */}
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div style={{ fontSize: "2rem", marginBottom: "10px" }}>
+              {icons[i] || "✨"}
+            </div>
+            <h3
+              className="fw-bold mb-1"
+              style={{
+                background: "linear-gradient(90deg, #ff9a9e, #fad0c4)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {stat.value}
+            </h3>
+            <p className={`mb-0 fw-medium ${dark ? "text-light" : "text-dark"}`}>
+              {stat.label}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  })}
+</div>
+
+<style>
+{`
+  @keyframes moveStripes {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+`}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
         {/* Projects */}
         <section id="projects" className="mb-5">
           <h2 className="fw-bold mb-3" style={gradientText}>
-            Selected Projects
+            Projects
           </h2>
           <div className="row g-4">
             {data.projects.map((p) => (
